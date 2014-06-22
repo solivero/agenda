@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    {% from 'bootstrapform.html' import form_field %}
+    <div style="width: 80%">
+        <form action="" method="POST">
+            <input type="hidden" value="" name="name_to_remove" id="remove">
+            <div class="row"> 
+                <div class="col-md-3">
+                    <p class="h1">{{ group.name }}</p>
+                </div>
+                <div class="col-md-2">
+                    {{ form_field(form.delete, class_='btn-danger', value='Ta bort grupp') }}
+                </div>
+            </div>
+            </br>
+            <div class="row">
+                <div class="col-md-3">
+                    {{ form_field(form.person, title='Välj klasskamrat') }}
+                </div>
+                <div class="col-md-2">
+                    {{ form_field(form.add, class_='btn-success', value='Lägg till person') }}
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-md-5">
+                    <ul class="list-group">
+                    {% for person in group.persons %}
+                            <li class="list-group-item">
+                                {{ person.name }}
+                                <button type="submit" value="{{ person.name }}" name="remove" class="close" aria-hidden="true">&times;</button>
+                            </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
