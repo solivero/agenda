@@ -1,11 +1,24 @@
 from agenda import app, db
-from flask import render_template, flash, redirect, url_for, request
+from sqlalchemy import inspect
+from flask import render_template, flash, redirect, url_for, request, g
 from .models import Person, Workgroup
-from .forms import Group, EditGroup
+from .forms import Group, EditGroup, SearchPerson
 
-@app.route('/')
+@app.before_request
+def before_request():
+    g.search_person = SearchPerson()
+
+@app.route('/', methods=["GET", "POST"])
 def index():
-	return render_template('index.html')
+    if request.method == "POST":
+        form = SearchPerson()
+        person = Person.query.get(form.person.data)
+        return render_template('index.html', person=person)
+    return render_template('index.html')
+
+@app.route('/events/')
+def events():
+    return "Nope."
 
 @app.route('/persons')
 def persons():
@@ -34,10 +47,16 @@ def edit_group(group_name):
         print request.form
         if 'add' in request.form:
             group.persons.append(Person.query.get(form.person.data))
+            #db.session.add(group)
+            db.session.commit()
             flash(Person.query.get(form.person.data).name + u" \u00E4r tillagd i gruppen", "success")
         if 'delete' in request.form:
             db.session.delete(group)
             db.session.commit()
+            flash('Grupp borttagen', 'success')
+            return redirect(url_for('groups'))
         if 'remove' in request.form:
             group.persons.remove(Person.query.filter_by(name=request.form['remove']).first())
-    return render_template('edit_group.html', group=group, form=EditGroup())
+            db.session.add(group)
+            db.session.commit()
+    return render_template('edit_group.html', group=group, form=form)

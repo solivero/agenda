@@ -13,10 +13,10 @@
         </div>
         <div class="col-md-6">
             <h2>Skapa ny grupp</h2></br>
-            <form action="/groups" method="POST" >
+            <form action="/groups/" method="POST" >
                 {{ form_field(form.name, with_label=True) }}
                 {{ form_field(form.persons, with_label=True, **{"data-selected-text-format":"count>3", "title":"Välj klasskamrater"}) }}
-                <button type="submit" class="btn btn-default">Lägg till grupp</button>
+                <button type="submit" class="btn btn-success">Lägg till grupp</button>
                 {{ form.csrf_token }}
             </form>
         </div>

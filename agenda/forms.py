@@ -27,3 +27,6 @@ class EditGroup(Form):
     person = SelectField(u"V\u00E4lj klasskamrat", choices=[(p.id, p.name) for p in Person.query.all()], coerce=int)
     add = SubmitField()
     delete = SubmitField()
+
+class SearchPerson(Form):
+    name = SelectField(u"Sok person", choices=[(p.id, p.name) for p in Person.query.all()], coerce=int)

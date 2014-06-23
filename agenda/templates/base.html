@@ -28,6 +28,13 @@
 
     <div id='wrap'>
         {% block topbar %}
+        {% set nav = [
+            ('index', 'Gemensam Agenda'),
+            ('events', 'Händelser'),
+            ('groups', 'Grupper')
+        ] -%}
+        {% set active = active|default('index') -%}
+        {% from 'bootstrapform.html' import form_field %}
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -44,17 +51,17 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Gemensam Agenda</a></li>
-                        <li><a href="#">Ny Händelse</a></li>
-                        <li>
-                            <a href="{{ url_for('groups') }}" class="dropdown-toggle" >Grupper</a>
-                        </li>
+                        {% for id, caption in nav %}
+                        <li class="{% if id == active %}active{% endif %}"><a href="{{ url_for(id) }}">{{ caption }}</a></li>
+                        {% endfor %}
                     </ul>
-                    <form class="navbar-form navbar-left" role="search">
+                    <form class="navbar-form navbar-left" role="search" action="/" method="POST">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
+                            {{ form_field(g.search_person.name, **{'data-live-search': 'true'}) }}
                         </div>
-                        <button type="submit" class="btn btn-default">Sök Person</button>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default">Sök Person</button>
+                        </div>
                     </form>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -103,17 +110,17 @@
         <div id="push"></div>
     </div>
 
-    <footer id="footer">
+    <nav class="navbar navbar-default navbar-fixed-bottom"
             <p class="muted credit">© 2014 Oliver Petri</p>
-    </footer>
+    </nav>
 
     {% block js_btm %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap-select.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-select.js') }}"></script>
     <script type="text/javascript">
         window.onload=function(){
-            $('.selectpicker').selectpicker();
+            $('.selectpicker').selectpicker().deselectAll();
         }
       </script>
     {% endblock %}
