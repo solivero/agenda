@@ -1,24 +1,25 @@
 from agenda import app, db
-from sqlalchemy import inspect
 from flask import render_template, flash, redirect, url_for, request, g
 from .models import Person, Workgroup
-from .forms import Group, EditGroup, SearchPerson
+from .forms import Group, EditGroup, Event
 
 @app.before_request
 def before_request():
-    g.search_person = SearchPerson()
+    g.persons = [(p.id, p.name) for p in Person.query.all()]
 
-@app.route('/', methods=["GET", "POST"])
+@app.route('/')
 def index():
-    if request.method == "POST":
-        form = SearchPerson()
-        person = Person.query.get(form.person.data)
-        return render_template('index.html', person=person)
-    return render_template('index.html')
+    name = ''
+    if request.args.get('person'):
+        person = Person.query.get(request.args.get('person'))
+        if person:
+            name=person.name
+    return render_template('index.html', name=name)
 
 @app.route('/events/')
 def events():
-    return "Nope."
+    form = Event()
+    return render_template('new_event.html', form=form)
 
 @app.route('/persons')
 def persons():
@@ -47,7 +48,7 @@ def edit_group(group_name):
         print request.form
         if 'add' in request.form:
             group.persons.append(Person.query.get(form.person.data))
-            #db.session.add(group)
+            db.session.add(group)
             db.session.commit()
             flash(Person.query.get(form.person.data).name + u" \u00E4r tillagd i gruppen", "success")
         if 'delete' in request.form:

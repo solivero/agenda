@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 
-{% block container %}
     {% block body %}
         <div class="jumbotron">
-            <h1>Välkommen {{ person.name|default('klasskamrat') }}</h1>
+            <h1>Välkommen {{ name|default('klasskamrat') }}</h1>
             <p>Sidan är ännu inte färdig men testa gärna det som finns</p>
         </div>
     {% endblock %}
-{% endblock %}

@@ -28,7 +28,7 @@
                     {% for person in group.persons %}
                         <li class="list-group-item">
                             {{ person.name }}
-                            <button type="submit" value="{{ person.name }}" name="remove" class="close" aria-hidden="true">&times;</button>
+                            <button type="submit" value="{{ person.name }}" name="remove" class="pull-right" style="background: none; border: none" aria-hidden="true"><span class="glyphicon glyphicon-remove-sign"></span></button>
                         </li>
                     {% endfor %}
                     </ul>

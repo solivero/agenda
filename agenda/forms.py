@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms.fields import TextField, DateField, SelectMultipleField, SelectField, SubmitField
+from wtforms.fields import TextField, DateField, SelectMultipleField, SelectField, SubmitField, DateTimeField, TextAreaField
 from wtforms.validators import Required, Length, ValidationError
 from models import Person, Workgroup
 
@@ -28,5 +28,8 @@ class EditGroup(Form):
     add = SubmitField()
     delete = SubmitField()
 
-class SearchPerson(Form):
-    name = SelectField(u"Sok person", choices=[(p.id, p.name) for p in Person.query.all()], coerce=int)
+class Event(Form):
+    title = TextField(u"Namn", validators=[Required(), Length(min=3, max=30)])
+    datetime = DateTimeField()
+    material = TextAreaField('Material')
+    category = TextField('Kategorier')
