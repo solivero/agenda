@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask_wtf import Form
 from wtforms.fields import TextField, DateField, SelectMultipleField, SelectField, SubmitField, DateTimeField, TextAreaField
 from wtforms.validators import Required, Length, ValidationError
@@ -31,5 +32,6 @@ class EditGroup(Form):
 class Event(Form):
     title = TextField(u"Namn", validators=[Required(), Length(min=3, max=30)])
     datetime = DateTimeField()
-    material = TextAreaField('Material')
+    groups = SelectMultipleField(u"Grupper som är delaktiga i händelsen", choices=[(g.id, g.name) for g in Workgroup.query.all()], validators=[Required()], coerce=int)
+    material = TextAreaField('Material', description=u"Länkar till användbart material med mera")
     category = TextField('Kategorier')

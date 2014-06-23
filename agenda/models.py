@@ -5,8 +5,8 @@ groupmembers = db.Table('groupmembers',
     db.Column('group_id', db.Integer, db.ForeignKey('workgroup.id'))
 )
 
-evenmembers = db.Table('eventmembers',
-    db.Column('person_id', db.Integer, db.ForeignKey('person.id')),
+eventgroups = db.Table('eventgroups',
+    db.Column('workgroup_id', db.Integer, db.ForeignKey('workgroup.id')),
     db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
 )
 
@@ -26,6 +26,8 @@ class Event(db.Model):
     date = db.Column(db.DateTime)
     material = db.Column(db.String(255))
     catergory = db.Column(db.String(50))
+    groups = db.relationship('Workgroup', secondary=eventgroups,
+        backref=db.backref('events'))
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
