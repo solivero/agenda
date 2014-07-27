@@ -16,7 +16,7 @@ else:
         db.create_all()
 
     elif argv[1] == "persons":
-        f = open("/home/oliver/Development/python/schema/namn.txt")
+        f = open("namn.txt")
         for name in f.readlines():
             p = Person(name=unicode(name[:-1], encoding="utf8"))
             db.session.add(p)

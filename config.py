@@ -1,4 +1,4 @@
 SRF_ENABLED = True
 SECRET_KEY = "bladiblah"
-SQLALCHEMY_DATABASE_URI = 'sqlite:////home/oliver/Development/flask/data.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///../data.db'
 DEBUG = True
