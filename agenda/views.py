@@ -52,7 +52,7 @@ def events():
     return render_template('events.html', form=form, events=Event.query.all())
 
 
-@app.route('/persons')
+@app.route('/persons/')
 def persons():
     return render_template('list.html', persons=Person.query.all())
 
@@ -76,7 +76,7 @@ def groups():
                            form=form, groups=Workgroup.query.all())
 
 
-@app.route('/groups/<string:group_name>', methods=["GET", "POST"])
+@app.route('/groups/<string:group_name>/', methods=["GET", "POST"])
 def edit_group(group_name):
     group = Workgroup.query.filter_by(name=group_name).first()
     form = EditGroup()
