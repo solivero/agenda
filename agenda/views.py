@@ -60,6 +60,7 @@ def persons():
 @app.route('/groups/', methods=["GET", "POST"])
 def groups():
     form = Group()
+    form.persons.choices = [(p.id, p.name) for p in Person.query.all()]
     if request.method == "POST":
         if form.validate_on_submit():
             group = Workgroup(name=form.name.data)
@@ -79,6 +80,7 @@ def groups():
 def edit_group(group_name):
     group = Workgroup.query.filter_by(name=group_name).first()
     form = EditGroup()
+    form.person.choices = [(p.id, p.name) for p in Person.query.all()]
     if request.method == "POST":
         print request.form
         if 'add' in request.form:

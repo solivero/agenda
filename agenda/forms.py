@@ -29,7 +29,6 @@ class Group(Form):
         Unique(Workgroup, Workgroup.name, message="Gruppen finns redan")])
     persons = SelectMultipleField(
         u'Gruppens medlemmar',
-        choices=[(p.id, p.name) for p in Person.query.all()],
         coerce=int,
         validators=[Required()])
     submit = SubmitField()
@@ -38,7 +37,6 @@ class Group(Form):
 class EditGroup(Form):
     person = SelectField(
         u"Välj klasskamrat",
-        choices=[(p.id, p.name) for p in Person.query.all()],
         coerce=int)
     add = SubmitField()
     delete = SubmitField()
@@ -60,7 +58,6 @@ class NewEvent(Form):
     date = DateField("Datum", validators=[Required()])
     groups = SelectMultipleField(
         u"Grupper som är delaktiga i händelsen",
-        choices=[(g.id, g.name) for g in Workgroup.query.all()],
         coerce=int,
         validators=[Required()])
     material = TextAreaField(
