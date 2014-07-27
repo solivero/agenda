@@ -23,7 +23,14 @@
                     {{ field.label.text|safe }}
                 </label>
             </div>
- 
+            
+        {% elif field.type == 'DateField' %}
+            <div class='input-group date' id='datetimepicker' data-date-format="YYYY-MM-DD">
+                {{ field(class_=class_ + ' form-control', **kwargs) }}
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+
         {% else %}
        
             {% if field.type in ('TextField', 'TextAreaField', 'PasswordField') %}

@@ -14,6 +14,7 @@
     {% block css %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-select.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-datetimepicker.css') }}">
     {% endblock %}
 
     {% block css_style %}
@@ -21,7 +22,6 @@
 
     {% block js_top %}
     <script src="//upcdn.b0.upaiyun.com/libs/modernizr/modernizr-2.6.2.min.js"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap-select.js') }}"></script>
     {% endblock %}
 </head>
 <body>
@@ -120,12 +120,18 @@
 
     {% block js_btm %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/moment.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap-select.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.js') }}"></script>
     <script type="text/javascript">
         window.onload=function(){
-            $('.selectpicker').selectpicker().deselectAll();
-        }
+            $('#datetimepicker').datetimepicker({
+                pickTime: false,
+                daysOfWeekDisabled: [0,6]
+            });
+            $('.selectpicker').selectpicker();
+        };
       </script>
     {% endblock %}
 
