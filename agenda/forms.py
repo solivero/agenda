@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import Form
-from wtforms.fields import TextField, DateField, SelectMultipleField, SelectField, SubmitField, DateTimeField, TextAreaField
+from wtforms.fields import TextField, SelectMultipleField, SelectField, \
+    SubmitField, DateField, TextAreaField
 from wtforms.validators import Required, Length, ValidationError
-from models import Person, Workgroup
+from models import Person, Workgroup, Event
+
 
 class Unique(object):
+
     """ validator that checks field uniqueness """
+
     def __init__(self, model, field, message=None):
         self.model = model
         self.field = field
@@ -13,25 +17,53 @@ class Unique(object):
             message = u'This element already exists'
         self.message = message
 
-    def __call__(self, form, field):        
+    def __call__(self, form, field):
         check = self.model.query.filter(self.field == field.data).first()
         if check:
             raise ValidationError(self.message)
 
 
 class Group(Form):
-    name = TextField(label="Gruppens namn", validators=[Required(), Length(min=3, max=30), Unique(Workgroup, Workgroup.name, message="Gruppen finns redan")])
-    persons = SelectMultipleField(u'Gruppens medlemmar', choices=[(p.id, p.name) for p in Person.query.all()], coerce=int, validators=[Required()])
+    name = TextField(label="Gruppens namn", validators=[Required(), Length(
+        min=3, max=30),
+        Unique(Workgroup, Workgroup.name, message="Gruppen finns redan")])
+    persons = SelectMultipleField(
+        u'Gruppens medlemmar',
+        choices=[(p.id, p.name) for p in Person.query.all()],
+        coerce=int,
+        validators=[Required()])
     submit = SubmitField()
 
+
 class EditGroup(Form):
-    person = SelectField(u"V\u00E4lj klasskamrat", choices=[(p.id, p.name) for p in Person.query.all()], coerce=int)
+    person = SelectField(
+        u"Välj klasskamrat",
+        choices=[(p.id, p.name) for p in Person.query.all()],
+        coerce=int)
     add = SubmitField()
     delete = SubmitField()
 
-class Event(Form):
-    title = TextField(u"Namn", validators=[Required(), Length(min=3, max=30)])
-    datetime = DateTimeField()
-    groups = SelectMultipleField(u"Grupper som är delaktiga i händelsen", choices=[(g.id, g.name) for g in Workgroup.query.all()], validators=[Required()], coerce=int)
-    material = TextAreaField('Material', description=u"Länkar till användbart material med mera")
-    category = TextField('Kategorier')
+
+class NewEvent(Form):
+    name = TextField(
+        "Namn",
+        validators=[
+            Required(),
+            Length(min=3, max=30),
+            Unique(
+                Event,
+                Event.name,
+                message=u"Händelsen finns redan"
+                )
+        ])
+    info = TextAreaField("Info")
+    date = DateField("Datum", validators=[Required()])
+    groups = SelectMultipleField(
+        u"Grupper som är delaktiga i händelsen",
+        choices=[(g.id, g.name) for g in Workgroup.query.all()],
+        coerce=int,
+        validators=[Required()])
+    material = TextAreaField(
+        'Material', description=u"Länkar till användbart material med mera")
+    tags = TextField('Taggar', description=u"""Skriv gärna ämne eller liknande.
+         Separera med kommatecken""")
